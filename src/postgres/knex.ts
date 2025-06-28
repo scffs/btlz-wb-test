@@ -1,8 +1,7 @@
 import _knex from "knex";
-import knexConfig from "#config/knex/knexfile.js";
+import knexConfig from "#config/knex/config.js";
 
 const knex = _knex(knexConfig);
-export default knex;
 
 function logMigrationResults(action: string, result: [number, string[]]) {
     if (result[1].length === 0) {
@@ -26,11 +25,11 @@ function logMigrationList(list: [{ name: string }[], { file: string }[]]) {
 }
 
 function logSeedRun(result: [string[]]) {
-    if(result[0].length === 0) {
+    if (result[0].length === 0) {
         console.log("No seeds to run");
     }
     console.log(`Ran ${result[0].length} seed files`);
-    for(const seed of result[0]) {
+    for (const seed of result[0]) {
         console.log("- " + seed?.split(/\/|\\/).pop());
     }
     // Ran 5 seed files

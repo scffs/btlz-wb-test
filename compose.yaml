@@ -1,5 +1,5 @@
 # provide a name if you wish
-# name: btlz-test
+name: btlz-test
 
 networks:
   postgres-net:
@@ -12,7 +12,7 @@ volumes:
 services:
 
   postgres:
-    container_name: postgres
+    container_name: postgres-btlz
 
     image: postgres:16.1-alpine
 
