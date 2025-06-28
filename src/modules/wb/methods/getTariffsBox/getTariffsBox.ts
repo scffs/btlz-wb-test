@@ -5,9 +5,10 @@ import { delay } from "#utils/delay.js";
 
 import { MAX_RETRIES } from "../../constants.js";
 import { isErrorResponse400, isErrorResponse401 } from "../../guards.js";
-import { TariffBoxData, TariffBoxSuccessResponse } from "./types.js";
+import { TariffBoxSuccessResponse, ValidatedTariffBoxData } from "./types.js";
+import { tariffBoxSuccessResponseSchema } from "./schemas.js";
 
-export async function getTariffsBox(this: WildberriesApi, date: string): Promise<TariffBoxData> {
+export async function getTariffsBox(this: WildberriesApi, date: string): Promise<ValidatedTariffBoxData> {
     let attempt = 0;
 
     while (attempt < MAX_RETRIES) {
@@ -16,7 +17,9 @@ export async function getTariffsBox(this: WildberriesApi, date: string): Promise
                 params: { date },
             });
 
-            return response.data.response.data;
+            const parsed = tariffBoxSuccessResponseSchema.parse(response.data);
+
+            return parsed.response.data;
         } catch (err) {
             const error = err as AxiosError;
 
