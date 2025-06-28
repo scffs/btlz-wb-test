@@ -1,7 +1,7 @@
 import _knex from "knex";
 import knexConfig from "#config/knex/config.js";
 
-const knex = _knex(knexConfig);
+export const knexInstance = _knex(knexConfig);
 
 function logMigrationResults(action: string, result: [number, string[]]) {
     if (result[1].length === 0) {
@@ -41,38 +41,38 @@ function logSeedMake(name: string) {
 
 export const migrate = {
     latest: async () => {
-        logMigrationResults("latest", await knex.migrate.latest());
+        logMigrationResults("latest", await knexInstance.migrate.latest());
     },
     rollback: async () => {
-        logMigrationResults("rollback", await knex.migrate.rollback());
+        logMigrationResults("rollback", await knexInstance.migrate.rollback());
     },
     down: async (name?: string) => {
-        logMigrationResults("down", await knex.migrate.down({ name }));
+        logMigrationResults("down", await knexInstance.migrate.down({ name }));
     },
     up: async (name?: string) => {
-        logMigrationResults("up", await knex.migrate.up({ name }));
+        logMigrationResults("up", await knexInstance.migrate.up({ name }));
     },
     list: async () => {
-        logMigrationList(await knex.migrate.list());
+        logMigrationList(await knexInstance.migrate.list());
     },
     make: async (name: string) => {
         if (!name) {
             console.error("Please provide a migration name");
             process.exit(1);
         }
-        console.log(await knex.migrate.make(name, { extension: "js" }));
+        console.log(await knexInstance.migrate.make(name, { extension: "js" }));
     },
 };
 
 export const seed = {
     run: async () => {
-        logSeedRun(await knex.seed.run());
+        logSeedRun(await knexInstance.seed.run());
     },
     make: async (name: string) => {
         if (!name) {
             console.error("Please provide a seed name");
             process.exit(1);
         }
-        logSeedMake(await knex.seed.make(name));
+        logSeedMake(await knexInstance.seed.make(name));
     },
 };

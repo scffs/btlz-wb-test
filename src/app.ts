@@ -1,4 +1,4 @@
-import { migrate, seed } from "#postgres/knex.js";
+import { migrate, seed } from "#postgres/knexInstance.js";
 
 await migrate.latest();
 await seed.run();
